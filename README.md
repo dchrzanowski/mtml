@@ -5,6 +5,12 @@ The data source preferably is a `JSON` object or a `JSON` file, if you'd like to
 
 The templates use [EJS](http://ejs.co/) style syntax, to prevent collision `mtml` uses dollar sign `<$ $>` brackets.
 
+# Installation
+`npm install -g mtml`
+
+# Features
+TODO
+
 # TLDR setup
 
 Let it be that we are working on a back-end in [NestJS](https://nestjs.com/) that requires you to build the API endpoint for each database **entity**. Hypothetically we are using Typescript on the back-end with [TypeORM](http://typeorm.io).
@@ -210,3 +216,6 @@ Breakdown of the above scenario file:
 - Provide an array of **templates**, each template has its own name and the file where it can be found, e.g. the template in the file `db-service.template.mtml` is named `dbEntity`.
 - Provide an array of **uses**, each **use** takes the template, injects the entity into it and spawns a file in the given location.
 **NOTE:** all pathing within `mtml` is relative to the scenario file.
+
+## License
+Licensed under [MIT](https://github.com/dchrzanowski/mtml/blob/master/LICENSE.md)
