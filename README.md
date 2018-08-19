@@ -173,7 +173,7 @@ The keys: `entity`, `template` and `use` are mandatory.
 `mtml` uses `eval` quite heavily to provide flexibility of the **scenario** file. This is perhaps the first time ever that I saw a good use of eval when creating a project.
 
 ### Note on value evaluation
-Each of the values of the keys are first `eval'ed`, if the `eval` fails then value is taken as is. So if you type in as value `v.capitalize('hello')` then the value will be `Hello`, but if you type `x.capitalize('hello')`, then the `eval` will fail and the value will literally be the string `x.capitalize('hello')`, since `x` is not a known variable. Convenience methods and variables that can be used as the values of the keys are described [here](convenience-methods-and-variables).
+Each of the values of the keys are first `eval'ed`, if the `eval` fails then value is taken as is. So if you type in as value `v.capitalize('hello')` then the value will be `Hello`, but if you type `x.capitalize('hello')`, then the `eval` will fail and the value will literally be the string `x.capitalize('hello')`, since `x` is not a known variable. Convenience methods and variables that can be used as the values of the keys are described [here](#convenience-methods-and-variables).
 
 Breakdown of the above **scenario** file:
 - Describe the **entity** as `json`, the json file is given as the 1st argument from the command line (`h.getArg(1)`). `h` is a helper package with a few convenience functions.
@@ -243,7 +243,61 @@ In the above case the `h.askUser` method will be called upon execution of the **
 <h1><$= m.descripton $></h1>
 ```
 
-# Providing an entity
+# Providing an entity other that a JSON file
+In the examples above we provide the entity from a JSON file. But in fact there are three different ways of providing an entity. The **entity** key must have one of the three:
+- `json` as in the example above, a JSON file
+- `here` a JSON object placed directly in the **scenario** file
+- `parser` an arbitrary file source. This option will need a parser written by you.
+
+## JSON file
+Is alread explained [here](#create-a-scenario-file).
+However the syntax is:
+```json
+"entity": {
+    "json": "path to a file"
+}
+```
+You can use a raw string, or use `h.askUser` to ask the user for a path from the command line, or `h.getArg` to provide a path from the command line.
+
+## JSON object in the scenario
+This option is simple, the syntax looks as follows:
+```json
+"entity": {
+    "here": [ {"my": "array"}, {"of": "objects"}]
+}
+```
+
+## Data from an arbitrary source
+In my case I inherited a project in which all the mongoose files were already written, so I didn't exactly want to write the JSON entities anew, so I thought that I'd write a parser for the mongoose files and provide the entity data that way.
+The syntax is:
+```json
+"entity": {
+    "parser": {
+        "file": "path to the Javascript file containing the parser method",
+        "data": "path to the file containing the data. An SQL file? A mongoose file? Etc. etc."
+    }
+}
+```
+Remember that you can always provide the paths as raw strings or use `h.getArg` or `h.askUser` methods to get the path as the command line argument or ask from the command line, respectively.
+
+The parser `file` that is being asked for must have the following syntax:
+```javascript
+module.exports = function(content) {
+    var output = {};
+    // do something with content and assign to output
+    return output;
+}
+```
+
+An example of a parser that attached a `magic` key to any `json` file that doesn't have one:
+```javascript
+module.exports = function(content) {
+    var output = JSON.parse(content);
+    output.magic = "magic";
+    return output;
+};
+```
+Basically what happens is that `mtml` will pass the file provided in the **scenario** file's `entity.parser.data` into the function as the `content` argument and then assign in to the `e` convenience variable that can be directly used in the **scenario** and the **templates**.
 
 ## License
 Licensed under [MIT](https://github.com/dchrzanowski/mtml/blob/master/LICENSE.md)
