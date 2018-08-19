@@ -1,0 +1,10 @@
+{
+    "name": "Product",
+    "description": "Product creation API",
+    "data": [
+        { "field": "id", "type": "number" },
+        { "field": "name", "type": "string" },
+        { "field": "description", "type": "string" },
+        { "field": "price", "type": "number"}
+    ]
+}

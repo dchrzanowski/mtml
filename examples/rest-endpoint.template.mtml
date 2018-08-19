@@ -1,0 +1,21 @@
+<$_ var entityName = e.name _$>
+<$_ var lEntityName = v.decapitalize(e.name) _$>
+@Controller('api/<$= lEntityName $>')
+export class <$= entityName $>Controller {
+
+    constructor(
+        private readonly <$= lEntityName $>Service: Db<$= entityName $>Service
+    ) { }
+
+    @Get()
+    async <$= lEntityName $>s(): Promise<<$= entityName $>[]> {
+
+        return await this.<$= lEntityName $>Service.find();
+    }
+
+    @Post()
+    async <$= lEntityName $>Post(@Body() <$= lEntityName $>: <$= entityName $>) {
+
+        return await this.<$= lEntityName $>Service.save(<$= lEntityName $>);
+    }
+}

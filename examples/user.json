@@ -1,0 +1,9 @@
+{
+    "name": "User",
+    "description": "User creation API",
+    "data": [
+        { "field": "id", "type": "number" },
+        { "field": "name", "type": "string" },
+        { "field": "age", "type": "number" }
+    ]
+}

@@ -1,0 +1,13 @@
+@Entity()
+export class <$= e.name $> {
+
+<$_ e.data.forEach(function(item) { _$>
+<$_ if (item.field === 'id') { _$>
+    @PrimaryGeneratedColumn()
+<$_ } else { _$>
+    @Column()
+<$_ } _$>
+    <$= item.field $>: <$= item.type $>;
+
+<$_ }) _$>
+}

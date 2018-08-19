@@ -1,0 +1,33 @@
+{
+    "entity": {
+        "json": "h.getArg(1)"
+    },
+    "template": [
+        {
+            "name": "dbEntity",
+            "from": "db-entity.template.mtml"
+        },
+        {
+            "name": "dbService",
+            "from": "db-service.template.mtml"
+        },
+        {
+            "name": "apiEndpoint",
+            "from": "rest-endpoint.template.mtml"
+        }
+    ],
+    "use": [
+        {
+            "template": "dbEntity",
+            "spawn": "`db/entity/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.entity.ts`"
+        },
+        {
+            "template": "dbService",
+            "spawn": "`db/service/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.service.ts`"
+        },
+        {
+            "template": "apiEndpoint",
+            "spawn": "`rest/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.controller.ts`"
+        }
+    ]
+}

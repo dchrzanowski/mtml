@@ -1,0 +1,43 @@
+<$_ var entityName = e.name _$>
+<$_ var lEntityName = v.decapitalize(e.name) _$>
+export class Db<$= entityName $>Service {
+
+    constructor(
+        @InjectRepository(<$= entityName $>)
+        private readonly <$= lEntityName $>Repository: Repository<<$= entityName $>>,
+    ) { }
+
+    /**
+     * Find all <$= lEntityName $>s by query
+     * @param query The query object (optional)
+     * @throws ServerErrorException Server Error Exception
+     */
+    async find(query?: any): Promise<<$= entityName $>[]> {
+
+        let <$= lEntityName $>s: <$= entityName $>[];
+
+        try {
+            <$= lEntityName $>s = await this.<$= lEntityName $>Repository.find(query);
+        } catch {
+            throw new ServerErrorException();
+        }
+
+        return <$= lEntityName $>s;
+    }
+
+    /**
+     * Save a <$= lEntityName $> into the database
+     * @param <$= lEntityName $> <$= entityName $> object
+     * @throws ServerErrorException Server Error Exception
+     */
+    async save(<$= lEntityName $>: <$= entityName $>): Promise<<$= entityName $>> {
+
+        try {
+            <$= lEntityName $> = await this.<$= lEntityName $>Repository.save(<$= lEntityName $>);
+        } catch {
+            throw new ServerErrorException();
+        }
+
+        return <$= lEntityName $>;
+    }
+}
