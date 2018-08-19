@@ -7,9 +7,12 @@ The templates use [EJS](http://ejs.co/) style syntax, to prevent a collision wit
 
 # Installation
 `npm install -g mtml`
+Remember the `-g` flag so that the application will be available from the command line anywhere in your file system. On *nix might have to `sudo` it ;)
 
 # Features
-TODO
+- Provide a quick way to create a substantial amount of code whenever there exists a pattern (pretty often, right?)
+- Use familiar syntax and file types: NodeJS, Javascript, JSON, EJS
+- Simple functionality, plenty of flexibility
 
 # Quick setup
 
@@ -214,7 +217,7 @@ The scenario file can also contain additional meta:
 {
     "meta": {
         "description": "h.askUser('Provide a description:')"
-    }
+    },
     "entity": {
         "json": "h.getArg(1)"
     },
@@ -222,19 +225,13 @@ The scenario file can also contain additional meta:
         {
             "name": "dbEntity",
             "from": "db-entity.template.mtml"
-        },
-        .
-        .
-        .
+        }
     ],
     "use": [
         {
             "template": "dbEntity",
             "spawn": "`db/entity/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.entity.ts`"
-        },
-        .
-        .
-        .
+        }
     ]
 }
 ```
