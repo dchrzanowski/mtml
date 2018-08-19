@@ -1,9 +1,9 @@
 # (m)ake (t)e(m)p(l)ate
 Is a command line tool that allows the user to create templates from a data source.
 
-The data source is preferably a `JSON` object or a `JSON` file, if you'd like to provide a data source from a different file, you'll have to write your own parser (`mtml` allows you to provide a custom parser).
+The data source is preferably a `json` object or a `json` file. If you'd like to provide a data source from a different file, then you will have to write your own parser (`mtml` allows you to provide a custom parser).
 
-The templates use [EJS](http://ejs.co/) style syntax, to prevent a collision with the current EJS syntac, `mtml` uses the dollar sign `<$ $>` brackets.
+The templates use [ejs](http://ejs.co/) for rendering. To prevent a collision with the current `ejs` syntax, `mtml` uses the dollar sign `<$ $>` brackets.
 
 # Features
 - Provide a quick way to create a substantial amount of code whenever there exists a pattern (pretty often, right?)
@@ -14,7 +14,7 @@ The templates use [EJS](http://ejs.co/) style syntax, to prevent a collision wit
 ```shell
 npm install -g mtml
 ```
-Remember the `-g` flag so that the application will be available from the command line anywhere in your file system. On *nix might have to `sudo` it ;)
+Remember the `-g` flag so that the application will be available from the command line anywhere in your file system. On *nix you might have to `sudo` it ;)
 
 # Run
 ```
@@ -23,10 +23,12 @@ mtml my-file.scenario.mtml any-additional command-line-args
 The scenario file is mandatory, any additional command line argument's functionality is described by the developer in the **scenario** file and the **templates**
 
 # Setup and quick tutorial
-Let's say that we are working on a back-end in [NestJS](https://nestjs.com/). The requirement is to build an API endpoint for each database's **entity**. The back-end database uses [TypeORM](http://typeorm.io) as a wrapper. To keep things simple the back-end code is very simplified and lacks import etc.
+Let's say that we are working on a back-end in [NestJS](https://nestjs.com/). The requirement is to build an API endpoint for each database's **entity**. The back-end database uses [TypeORM](http://typeorm.io) as a wrapper. To keep things simple for this tutorial, the back-end code is very simplified and lacks imports, etc.
 
 ## Create a project folder
-Make sure that you've [installed](#installation) `mtml`. Create an empty folder to follow this small tutorial.
+Make sure that you've [installed](#installation) `mtml`.
+
+Create an empty folder to follow this small tutorial.
 
 *NOTE*: All of the below setup files are available in the `examples` folder.
 
@@ -42,12 +44,14 @@ Lets define our first **entity**. Create a file inside of the folder you've just
     ]
 }
 ```
-A simple enough **entity** called User. It has three fields, each of a certain name and type. It is purely up to the developer to structure the  **entity** and define the data that goes into it. The above is just a basic example. `mtml` does not limit you to CRUD operations only.
+A simple enough **entity** called User. It has three fields, each of a certain name and type.
+
+It is purely up to the developer to structure the  **entity** and define the data that goes into it. The above is just a basic example. `mtml` does not limit you to CRUD operations only.
 
 ## Creating templates
-Now lets define **templates** for creating the database TypeORM entity, creating the database service and creating the api endpoint.
+Now lets define **templates** for creating the database TypeORM entity, creating the database service and creating the API endpoint (as stated above). In your case it could be: SQL files, PHP files, Java files, Django, Python, HTML files, ...
 
-Keep in mind that the created code's syntax may not be accurate or structurally sound, it is just to show how `mtml` works.
+Keep in mind that the below template's created code syntax may not be accurate or structurally sound, it is just to showcase how `mtml` works.
 
 ## Database entity template
 Create a file inside of your project's folder and name it `db-entity.template.mtml`:
@@ -177,20 +181,11 @@ Create a file inside of your project's folder and name it: `my-project.scenario.
     ]
 }
 ```
-This is **scenario** file defines:
+This **scenario** file declares:
 - Where to take the **entity** from
 - How to read the **entity**
 - Where to get the **templates** from and what are their names
 - How to use the **templates** and what files to spawn out of them
-
-The keys: `entity`, `template` and `use` are mandatory.
-
-`mtml` uses `eval` quite heavily to provide flexibility of the **scenario** file. This is perhaps the first time ever that I saw a good use of eval when creating a project. I know that `eval` has security issues, but `mtml` is meant to be used by the developer that created the **scenario** file.
-
-### Note on scenario key value evaluation
-Each of the values of the keys are first `eval'ed`, if the `eval` fails then the value is taken as is. So if you type in as a value: `v.capitalize('hello')`, then the value will be `Hello` (`v` references the `voca` package), but if you type `x.capitalize('hello')`, then the `eval` will fail and the value will literally be the string `x.capitalize('hello')`, since `x` is not a known variable. Convenience methods and variables that can be used as the values of the keys are described [here](#convenience-methods-and-variables).
-
-Ok, back to the above **scenario** file.
 
 Breakdown of the above **scenario** file:
 - Provide the **entity** as `json`, the json file is given as the 1st argument from the command line (`h.getArg(1)`). `h` is a helper package with a few [convenience functions](#convenience-methods-and-variables).
@@ -198,16 +193,26 @@ Breakdown of the above **scenario** file:
 - Provide an array of **uses**, each **use** takes the template, injects the entity into it and spawns a file in the given location. As an example, the first **use** takes the `dbEntity` and spawns a file at `db/entity/user/user.entity.ts`. We use string interpolation and the `voca` package `decapitalize` method to manipulate the path.
 *NOTE:* all pathing within `mtml` is relative to the **scenario** file.
 
+The keys: `entity`, `template` and `use` are mandatory.
+
+`mtml` uses `eval` quite heavily to provide flexibility of the **scenario** file. This is perhaps the first time ever that I saw a good use of `eval` when creating a project. I know that `eval` has security issues, but `mtml` is meant to be used by the developer that created the **scenario** file and thus it is his/hers responsibility to not break things and use `mtml` with caution.
+
+### Note on scenario key value evaluation
+Each of the values of the keys are first `eval'ed`, if the `eval` fails then the value is taken as is. So if you type in as a value: `v.capitalize('hello')`, then the value will be `Hello` (`v` references the `voca` package), but if you type `x.capitalize('hello')`, then the `eval` will fail and the value will literally be the string `x.capitalize('hello')`, since `x` is not a known variable.
+
+Convenience methods and variables that can be used as the values of the keys are described [here](#convenience-methods-and-variables).
+
 ## Run `mtml`
-Now, the setup is complete. Run the following command from within the project folder that you've created:
+Now, since we have completed the setup, let's run the following command from within the project folder that you've created:
 ```shell
 mtml my-project.scenario.mtml user.json
 ```
 You should see a list of three files that have been created: `user.entity.ts`, `user.service.ts` and `user.controller.ts`.
-Do you remember the `h.getArg(1)` in the **scenario** file? That method grabs the 1st argument of the command line, in this case `user.json`. Argument 0 is the **scenario** file `my-project.scenario.mtml`.
+
+Do you remember the `h.getArg(1)` in the **scenario** file's `json` key? That method grabs the 1st argument of the command line, in this case `user.json`. By doing so we can now pass in different `json` files as entities from the command line to `mtml` and reuse the scenario!
 
 ## Need more entities?
-Now simply create a different entity `json` file, let's say `product.json`:
+Lets create a different entity, create a `product.json` file:
 ```json
 {
     "name": "Product",
@@ -224,9 +229,9 @@ So now if you run:
 ```shell
 mtml my-project.scenario.mtml product.json
 ```
-You will reuse your scenario file and all the templates that you've created. Neat, right?
+You will reuse your scenario file and all the templates that you've created, but the a different data input (`product.json` file). Neat, right?
 
-It is purely up to you how far you want your entity to expand. You could create a whole back-end/front-end rest api and the relevant `html` files and their inputs fields, all based from the entity file. It is all up to your imagination where this takes you and how much it helps you.
+It is purely up to you how far you want your entity to expand. You could create a whole back-end/front-end rest API and the relevant `html` files and their inputs fields. All based from the entity file. It is all up to your imagination where this takes you and how much it helps you.
 
 # Convenience methods and variables
 Both the **template** file and the **scenario** file have access to the following convenience variables, and their methods/objects:
@@ -239,7 +244,7 @@ Both the **template** file and the **scenario** file have access to the followin
 - `h` the custom helpers lib which has the following methods:
   - `abort(reason)` aborts the application's execution, pass in a string as the `reason`
   - `askUser(prompt)` ask for input from the user via the command line, provide a string as the `prompt`
-  - `getArg(number)` get the command line argument provided at index `number`. In you'd run from the command line `mtml my.scenario.mtml foo.json`, then `my.scenario.mtml` is argument 0 and `foo.json` is argument 1.
+  - `getArg(number)` get the command line argument provided at index `number`. Example: if you would run from the command line `mtml my.scenario.mtml foo.json`, then `my.scenario.mtml` is argument 0 and `foo.json` is argument 1.
 
 # Command line arguments
 Two command line arguments are available:
