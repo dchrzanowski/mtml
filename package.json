@@ -1,0 +1,25 @@
+{
+    "name": "mtml",
+    "version": "1.0.0",
+    "description": "Create templates from a data source",
+    "main": "./src/app.js",
+    "bin": {
+        "mtml": "./bin/mtml.js"
+    },
+    "keywords": [
+        "code",
+        "template",
+        "create",
+        "generate"
+    ],
+    "author": "Damian Chrzanowski",
+    "license": "MIT",
+    "dependencies": {
+        "chalk": "^2.4.1",
+        "ejs": "^2.6.1",
+        "lodash": "^4.17.10",
+        "mkdirp": "^0.5.1",
+        "readline-sync": "^1.4.9",
+        "voca": "^1.4.0"
+    }
+}
