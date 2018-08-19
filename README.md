@@ -348,8 +348,13 @@ Copyright (c) 2018 Damian Chrzanowski <pjdamian.chrzanowski@gmail.com>, MIT Lice
 
 ## This app uses the following open-source libraries
 [voca](https://github.com/panzerdp/voca), Copyright (c) 2016 Dmitri Pavlutin, MIT License
+
 [chalk](https://github.com/chalk/chalk/), Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com), MIT License
+
 [mkdirp](https://github.com/substack/node-mkdirp), Copyright 2010 James Halliday (mail@substack.net), MIT License
+
 [lodash](https://github.com/lodash/lodash), Copyright JS Foundation and other contributors <https://js.foundation/>, MIT License
+
 [readline-sync](https://github.com/anseki/readline-sync), Copyright (c) 2018 anseki, MIT License
+
 [ejs](https://github.com/mde/ejs), copyright 2012 mde@fleegix.org, Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
