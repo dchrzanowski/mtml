@@ -7,6 +7,9 @@
         "mtml": "./bin/mtml.js"
     },
     "keywords": [
+        "mtml",
+        "crud",
+        "repetition",
         "code",
         "template",
         "create",

@@ -131,6 +131,8 @@ Helpers.prototype.evalOrLeave = function(value) {
     var s = this.app.s;
     // make a shortcut for the entity itself
     var e = this.app.s.entity;
+    // make a shortcut for the meta
+    var m = this.app.s.meta;
 
     try {
         return eval(value);

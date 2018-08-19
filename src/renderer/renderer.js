@@ -20,7 +20,9 @@ Rendered.prototype.render = function(content) {
             // scenario
             s: this.app.s,
             // shortcut to entity
-            e: this.app.s.entity
+            e: this.app.s.entity,
+            // shortcut to meta
+            m: this.app.s.meta
         },
         {
             delimiter: '$'
