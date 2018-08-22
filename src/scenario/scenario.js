@@ -14,7 +14,7 @@ function Scenario(app) {
  * Set the scenario path and the scenario file name
  */
 Scenario.prototype.scenarioSetPaths = function () {
-    var executionPath = process.cwd();
+    var executionPath = this.app.settings.basedir
     this.fileName = this.app.h.getArg(0);
 
     var path = this.app.h.joinPath(executionPath, this.fileName);
