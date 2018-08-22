@@ -42,7 +42,7 @@ ActionUse.prototype.checkUseKeys = function(use) {
         errors.push("Each use object must contain a 'template' and a 'spawn' key");
 
     if (use.relativeTo &&
-        !['scenario', 'process', undefined].includes(use.relativeTo))
+        !['scenario', 'process'].includes(use.relativeTo))
         errors.push("A use object's 'relativeTo' key must be ommited or one of 'scenario' or 'process'");
 
     if (errors.length > 0)

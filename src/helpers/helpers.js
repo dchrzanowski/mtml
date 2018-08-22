@@ -27,10 +27,10 @@ Helpers.prototype.askUser = function(prompt) {
  */
 Helpers.prototype.loadFileRelative = function(filePath, relativeTo = 'scenario') {
     // join the given path with the scenario's path
-    if (relativeTo === 'scenario') {
-        filePath = this.joinPath(this.app.s.path, filePath);
-    } else {
+    if (relativeTo === 'process') {
         filePath = this.joinPath(process.cwd(), filePath);
+    } else {
+        filePath = this.joinPath(this.app.s.path, filePath);
     }
 
     return this.loadFile(filePath);
@@ -58,10 +58,10 @@ Helpers.prototype.loadFile = function(filePath) {
  */
 Helpers.prototype.saveFileRelative = function(filePath, content, relativeTo = 'scenario') {
     // join the given path with the scenario's path
-    if (relativeTo === 'scenario') {
-        filePath = this.joinPath(this.app.s.path, filePath);
-    } else {
+    if (relativeTo === 'process') {
         filePath = this.joinPath(process.cwd(), filePath);
+    } else {
+        filePath = this.joinPath(this.app.s.path, filePath);
     }
 
     this.saveFile(filePath, content);

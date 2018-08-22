@@ -75,8 +75,8 @@ ActionEntity.prototype.checkEntityKeys = function(entity) {
           keys.includes('parser')))
         errors.push("Entity must have a 'json', 'here' or 'parser' key");
 
-    if (keys.includes('relativeTo') &&
-        !['scenario', 'process', undefined].includes(entity.relativeTo))
+    if (entity.relativeTo &&
+        !['scenario', 'process'].includes(entity.relativeTo))
         errors.push("Entity's 'relativeTo' key must be ommited or one of 'scenario' or 'process'");
 
     if (errors.length > 0)
