@@ -17,11 +17,11 @@ ActionEntity.prototype.execute = function() {
 
     } else if (entity.json) {
         // JSON file path in the the scenario file
-        this.executeJSON(entity.json);
+        this.executeJSON(entity.json, entity.relativeTo);
 
     } else if (entity.parser) {
         // Parser method option in the scenario file
-        this.executeParser(entity.parser);
+        this.executeParser(entity.parser, entity.relativeTo);
     }
 };
 
@@ -29,12 +29,12 @@ ActionEntity.prototype.execute = function() {
  * Execute the 'json' Entity Action type
  * @param {String} content - String to be evaled or left alone
  */
-ActionEntity.prototype.executeJSON = function(json) {
+ActionEntity.prototype.executeJSON = function(json, relativeTo) {
     // check if the path can be evaled
     var filePath = this.app.h.evalOrLeave(json);
 
     // load the file
-    var content = this.app.h.loadFileRelative(filePath);
+    var content = this.app.h.loadFileRelative(filePath, relativeTo);
 
     // parse it and assign to the scenario
     this.app.s.entity = JSON.parse(content);
@@ -44,7 +44,7 @@ ActionEntity.prototype.executeJSON = function(json) {
  * Execute the 'parser' Entity Action type
  * @param {Object} parser - Object that containt the parser file location and the data file location
  */
-ActionEntity.prototype.executeParser = function(parser) {
+ActionEntity.prototype.executeParser = function(parser, relativeTo) {
 
     this.checkParserKeys(parser);
 
@@ -55,7 +55,7 @@ ActionEntity.prototype.executeParser = function(parser) {
     var parsingMethod = require(parserPath);
 
     // get the data file
-    var dataFile = this.app.h.loadFileRelative(parser.data);
+    var dataFile = this.app.h.loadFileRelative(parser.data, relativeTo);
 
     // use the parser on the data file and assign to the scenario
     this.app.s.entity = parsingMethod(dataFile);
@@ -68,16 +68,19 @@ ActionEntity.prototype.executeParser = function(parser) {
 ActionEntity.prototype.checkEntityKeys = function(entity) {
 
     var keys = Object.keys(entity);
-
-    if (keys.length > 1) {
-        this.app.h.abort("Entity can have only one key: 'json', 'here' or 'parser'");
-    }
+    var errors = [];
 
     if (!(keys.includes('json') ||
           keys.includes('here') ||
           keys.includes('parser')))
+        errors.push("Entity must have a 'json', 'here' or 'parser' key");
 
-        this.app.h.abort("Entity must have a 'json', 'here' or 'parser' key");
+    if (entity.relativeTo &&
+        !['scenario', 'cwd'].includes(entity.relativeTo))
+        errors.push("Entity's 'relativeTo' key must be ommited or must be one of 'scenario' or 'cwd'");
+
+    if (errors.length > 0)
+        this.app.h.abort(errors.join('\n'));
 };
 
 /**

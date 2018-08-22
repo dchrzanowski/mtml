@@ -70,7 +70,7 @@ export class <$= e.name $> {
 <$_ }) _$>
 }
 ```
-*Note* the `e` variable. `e` is basically your **entity** that you defined in the `user.json` file.
+*Note* the `e` variable. `e` refers to your **entity** that you defined in the `user.json` file.
 
 *Breakedown*: Name the class the same way as you named your **entity**. Then iterate through the data array: for each element of the array create a new section for TypeORM field description. If the field is called id then make it a primary column, otherwise just make a normal column.
 
@@ -192,7 +192,7 @@ Breakdown of the above **scenario** file:
 - Provide the **entity** as `json`, the json file is given as the 1st argument from the command line (`h.getArg(1)`). `h` is a helper package with a few [convenience functions](#convenience-methods-and-variables).
 - Provide an array of **templates**, each template has its own name and the file path where it can be found. As an example, the first **template** is named `dbEntity` and can be located at `db-entity.template.mtml`. The `name` and `from` keys are mandatory!
 - Provide an array of **uses**, each **use** takes the template, injects the entity into it and spawns a file in the given location. As an example, the first **use** takes the `dbEntity` and spawns a file at `db/entity/user/user.entity.ts`. We use string interpolation and the `voca` package's `decapitalize` method to manipulate the path. Each of the **uses** can optionally have an `if` key, if it evaluates to false, then that particular **use** will be skipped.
-*NOTE:* all pathing within `mtml` is relative to the **scenario** file.
+*NOTE:* all pathing within `mtml` is relative to the **scenario** file by default.
 
 The keys: `entity`, `template` and `use` are mandatory.
 
@@ -233,6 +233,82 @@ mtml my-project.scenario.mtml product.json
 You will reuse your scenario file and all the templates that you've created, but with a different data input (the `product.json` file). Neat, right?
 
 It is purely up to you how far you want your entity to expand. You could create a whole back-end/front-end rest API and the relevant `html` files and their inputs fields. All based from the entity file. It is all up to your imagination where this takes you and how much it helps you.
+
+# Changing where files are loaded saved
+By default pathing in 'mtml' is relative to the scenario file. To override this behaviour add a `relativeTo` key to the `entity`, `template` or `use` objects. There are two possible values `"scenario"` (the default) or `"cwd"`. `"cwd"` loads or spawns files relative to where `mtml` was called ((c)urrent (w)orking (d)irectory).
+
+For example, with the folder structure:
+```
+|-- mtml/
+|   |-- templates/
+|   |   |-- db-entity.template.mtml
+|   |   |-- db-service.template.mtml
+|   |   `-- rest-endpoint.template.mtml
+|   `-- my-project.scenario.mtml
+`-- user.json
+```
+Changing the above scenario file to:
+```
+{
+    "entity": {
+        "json": "h.getArg(1)",
+        "relativeTo": "cwd"
+    },
+    "template": [
+        {
+            "name": "dbEntity",
+            "from": "templates/db-entity.template.mtml",
+        },
+        {
+            "name": "dbService",
+            "from": "templates/db-service.template.mtml",
+        },
+        {
+            "name": "apiEndpoint",
+            "from": "templates/rest-endpoint.template.mtml",
+        }
+    ],
+    "use": [
+        {
+            "template": "dbEntity",
+            "spawn": "`db/entity/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.entity.ts`",
+            "relativeTo": "cwd"
+        },
+        {
+            "template": "dbService",
+            "spawn": "`db/service/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.service.ts`",
+            "relativeTo": "cwd"
+        },
+        {
+            "template": "apiEndpoint",
+            "spawn": "`rest/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.controller.ts`",
+            "relativeTo": "cwd"
+        }
+    ]
+}
+```
+Would result in the following after running
+```
+$ mtml mtml/my-project.scenario.mtml user.json
+
+|-- db/
+|   |-- entity/
+|   |   `-- user/
+|   |       `-- user.entity.ts
+|   `-- service/
+|       `-- user/
+|           `-- user.service.ts
+|-- rest/
+|   `-- user/
+|       `-- user.controller.ts
+|-- mtml/
+|   |-- templates/
+|   |   |-- db-entity.template.mtml
+|   |   |-- db-service.template.mtml
+|   |   `-- rest-endpoint.template.mtml
+|   `-- my-project.scenario.mtml
+`-- user.json
+```
 
 # Convenience methods and variables
 Both the **template** file and the **scenario** file have access to the following convenience variables, and their methods/objects:

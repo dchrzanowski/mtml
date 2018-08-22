@@ -5,6 +5,7 @@ function Settings(app) {
 
     this.hasDryRun();
     this.hasDebug();
+    this.hasBaseDir();
 }
 
 /**
@@ -28,6 +29,20 @@ Settings.prototype.hasDebug = function() {
     if (idx != -1) {
         this.debug = true;
         process.argv.splice(idx, 1);
+    }
+};
+
+/**
+ * Check whether to you a different base directory
+ */
+Settings.prototype.hasBaseDir = function() {
+    var idx = process.argv.indexOf('--base-dir');
+
+    if (idx != -1) {
+        var args = process.argv.splice(idx, 2);
+        this.baseDir = this.app.path.join(process.cwd(), args[1]);
+    } else {
+        this.baseDir = process.cwd();
     }
 };
 

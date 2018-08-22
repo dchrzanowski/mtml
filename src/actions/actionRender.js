@@ -20,7 +20,7 @@ ActionRender.prototype.execute = function() {
             var renderedTemplate = this.app.renderer.render(template);
 
             // save the file relative to the scenario file
-            this.app.h.saveFileRelative(spawnPath, renderedTemplate);
+            this.app.h.saveFileRelative(spawnPath, renderedTemplate, each.relativeTo);
         } else {
             // Inform of skipping
             console.log(this.app.c.yellow.bold("Skipping: ") + spawnPath);
