@@ -8,7 +8,7 @@ function Helpers(app) {
  */
 Helpers.prototype.abort = function(reason) {
     console.log(this.app.c.red(reason));
-    process.exit(0);
+    process.exit(1);
 };
 
 /**
