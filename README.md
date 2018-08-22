@@ -191,7 +191,7 @@ Breakdown of the above **scenario** file:
 - Provide the **entity** as `json`, the json file is given as the 1st argument from the command line (`h.getArg(1)`). `h` is a helper package with a few [convenience functions](#convenience-methods-and-variables).
 - Provide an array of **templates**, each template has its own name and the file path where it can be found. As an example, the first **template** is named `dbEntity` and can be located at `db-entity.template.mtml`. The `name` and `from` keys are mandatory!
 - Provide an array of **uses**, each **use** takes the template, injects the entity into it and spawns a file in the given location. As an example, the first **use** takes the `dbEntity` and spawns a file at `db/entity/user/user.entity.ts`. We use string interpolation and the `voca` package `decapitalize` method to manipulate the path.
-*NOTE:* all pathing within `mtml` is relative to the **scenario** file.
+*NOTE:* all pathing within `mtml` is relative to the **scenario** file by default.
 
 The keys: `entity`, `template` and `use` are mandatory.
 
