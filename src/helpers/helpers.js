@@ -119,6 +119,8 @@ Helpers.prototype.joinPath = function(a, b) {
 /**
  * Attempt to evalute a value
  * @param {String} value - Value to be eval'ed
+ * @param {Boolean} value - (Optional) Abort when eval fails flag
+ * @param {String} value - (Optional) Fail message
  */
 Helpers.prototype.evalOrLeave = function(value, abortFlag, errMsg) {
 
