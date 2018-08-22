@@ -18,15 +18,23 @@ ActionUse.prototype.execute = function() {
     for (var each of use) {
         this.checkUseKeys(each);
 
-        // attempt to eval the 'template' and 'spawn' keys.
-        var template = this.app.h.evalOrLeave(each.template);
-        var spawn = this.app.h.evalOrLeave(each.spawn);
+        // check if we should use it by checking if there is no condition or if the eval of the condition gives true
+        const shouldUse = !each.condition || this.app.h.evalOrAbort(
+            'Each use object\'s \'condition\' key must be eval-able or omitted',
+            each.condition
+        );
 
-        // assign the 'use' to the scenario under its given name
-        this.app.s.use.push({
-            template: template,
-            spawn: spawn
-        });
+        if (shouldUse) {
+            // attempt to eval the 'template' and 'spawn' keys.
+            var template = this.app.h.evalOrLeave(each.template);
+            var spawn = this.app.h.evalOrLeave(each.spawn);
+
+            // assign the 'use' to the scenario under its given name
+            this.app.s.use.push({
+                template: template,
+                spawn: spawn
+            });
+        }
     }
 };
 

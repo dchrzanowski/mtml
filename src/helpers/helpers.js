@@ -115,13 +115,12 @@ Helpers.prototype.joinPath = function(a, b) {
         this.abort("Could not join paths: " + a + ", and " + b);
     }
 };
-
 /**
- * Attempt to evalute a value
+ * Attempt to evalute a value, returns the default param if eval fails or the value if the default param equals value
+ * @param {*} deflt - the default value to return, if it's the string 'value' returns the given value
  * @param {String} value - Value to be eval'ed
  */
-Helpers.prototype.evalOrLeave = function(value) {
-
+Helpers.prototype.evalOr = function(deflt, value, leave, abort) {
     // make some app libs available for eval (for ease of use);
     var v = this.app.v;
     var _ = this.app._;
@@ -137,8 +136,30 @@ Helpers.prototype.evalOrLeave = function(value) {
     try {
         return eval(value);
     } catch (e) {
-        return value;
+        if (abort) {
+            this.abort(deflt)
+        } else {
+            return leave
+                ? value
+                : deflt
+        }
     }
+};
+
+/**
+ * Attempt to evalute a value, returns the value if eval fails
+ * @param {String} value - Value to be eval'ed
+ */
+Helpers.prototype.evalOrLeave = function(value) {
+    return this.evalOr(undefined, value, true, false)
+};
+
+/**
+ * Attempt to evalute a value, returns false if eval fails
+ * @param {String} value - Value to be eval'ed
+ */
+Helpers.prototype.evalOrAbort = function(reason, value) {
+    return this.evalOr(reason, value, false, true);
 };
 
 module.exports = function(app) {
