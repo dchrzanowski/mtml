@@ -18,23 +18,17 @@ ActionUse.prototype.execute = function() {
     for (var each of use) {
         this.checkUseKeys(each);
 
-        // check if we should use it by checking if there is no condition or if the eval of the condition gives true
-        const shouldUse = !each.condition || this.app.h.evalOrAbort(
-            'Each use object\'s \'condition\' key must be eval-able or omitted',
-            each.condition
-        );
+        // attempt to eval the 'template', 'spawn' and 'if' keys.
+        var template = this.app.h.evalOrLeave(each.template);
+        var spawn = this.app.h.evalOrLeave(each.spawn);
+        var useIf = each.if ? this.app.h.evalOrLeave(each.if, true) : true;
 
-        if (shouldUse) {
-            // attempt to eval the 'template' and 'spawn' keys.
-            var template = this.app.h.evalOrLeave(each.template);
-            var spawn = this.app.h.evalOrLeave(each.spawn);
-
-            // assign the 'use' to the scenario under its given name
-            this.app.s.use.push({
-                template: template,
-                spawn: spawn
-            });
-        }
+        // assign the 'use' to the scenario under its given name
+        this.app.s.use.push({
+            template: template,
+            spawn: spawn,
+            if: useIf
+        });
     }
 };
 
@@ -42,10 +36,11 @@ ActionUse.prototype.execute = function() {
  * Check if the 'use' keys are correct. Must have a 'template' and a 'spawn' key.
  * @param {Object} use - Use object
  */
-ActionUse.prototype.checkUseKeys = function(use) {
-    if (!use.template ||
-        !use.spawn)
+ActionUse.prototype.checkUseKeys = function(each) {
+    if (!each.template ||
+        !each.spawn)
         this.app.h.abort("Each use object must contain a 'template' and a 'spawn' key");
+
 };
 
 module.exports = function(app) {

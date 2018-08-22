@@ -72,7 +72,7 @@ export class <$= e.name $> {
 ```
 *Note* the `e` variable. `e` is basically your **entity** that you defined in the `user.json` file.
 
-*Brakedown*: Name the class the same way as you named your **entity**. Then iterate through the data array: for each element of the array create a new section for TypeORM field description. If the field is called id then make it a primary column, otherwise just make a normal column.
+*Breakedown*: Name the class the same way as you named your **entity**. Then iterate through the data array: for each element of the array create a new section for TypeORM field description. If the field is called id then make it a primary column, otherwise just make a normal column.
 
 *Note* the usage of underscores `<$_ _$>` to collapse blank lines.
 
@@ -175,6 +175,7 @@ Create a file inside of your project's folder and name it: `my-project.scenario.
             "spawn": "`db/service/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.service.ts`"
         },
         {
+            "if": "true",
             "template": "apiEndpoint",
             "spawn": "`rest/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.controller.ts`"
         }
@@ -190,7 +191,7 @@ This **scenario** file declares:
 Breakdown of the above **scenario** file:
 - Provide the **entity** as `json`, the json file is given as the 1st argument from the command line (`h.getArg(1)`). `h` is a helper package with a few [convenience functions](#convenience-methods-and-variables).
 - Provide an array of **templates**, each template has its own name and the file path where it can be found. As an example, the first **template** is named `dbEntity` and can be located at `db-entity.template.mtml`. The `name` and `from` keys are mandatory!
-- Provide an array of **uses**, each **use** takes the template, injects the entity into it and spawns a file in the given location. As an example, the first **use** takes the `dbEntity` and spawns a file at `db/entity/user/user.entity.ts`. We use string interpolation and the `voca` package `decapitalize` method to manipulate the path.
+- Provide an array of **uses**, each **use** takes the template, injects the entity into it and spawns a file in the given location. As an example, the first **use** takes the `dbEntity` and spawns a file at `db/entity/user/user.entity.ts`. We use string interpolation and the `voca` package's `decapitalize` method to manipulate the path. Each of the **uses** can optionally have an `if` key, if it evaluates to false, then that particular **use** will be skipped.
 *NOTE:* all pathing within `mtml` is relative to the **scenario** file.
 
 The keys: `entity`, `template` and `use` are mandatory.
@@ -229,7 +230,7 @@ So now if you run:
 ```shell
 mtml my-project.scenario.mtml product.json
 ```
-You will reuse your scenario file and all the templates that you've created, but the a different data input (`product.json` file). Neat, right?
+You will reuse your scenario file and all the templates that you've created, but with a different data input (the `product.json` file). Neat, right?
 
 It is purely up to you how far you want your entity to expand. You could create a whole back-end/front-end rest API and the relevant `html` files and their inputs fields. All based from the entity file. It is all up to your imagination where this takes you and how much it helps you.
 
