@@ -120,7 +120,7 @@ Helpers.prototype.joinPath = function(a, b) {
  * @param {*} deflt - the default value to return, if it's the string 'value' returns the given value
  * @param {String} value - Value to be eval'ed
  */
-Helpers.prototype.evalOr = function(deflt, value) {
+Helpers.prototype.evalOr = function(deflt, value, leave, abort) {
     // make some app libs available for eval (for ease of use);
     var v = this.app.v;
     var _ = this.app._;
@@ -136,9 +136,13 @@ Helpers.prototype.evalOr = function(deflt, value) {
     try {
         return eval(value);
     } catch (e) {
-        return deflt === 'value'
-            ? value
-            : deflt;
+        if (abort) {
+            this.abort(deflt)
+        } else {
+            return leave
+                ? value
+                : deflt
+        }
     }
 };
 
@@ -147,7 +151,15 @@ Helpers.prototype.evalOr = function(deflt, value) {
  * @param {String} value - Value to be eval'ed
  */
 Helpers.prototype.evalOrLeave = function(value) {
-    return this.evalOr('value', value)
+    return this.evalOr(undefined, value, true, false)
+};
+
+/**
+ * Attempt to evalute a value, returns false if eval fails
+ * @param {String} value - Value to be eval'ed
+ */
+Helpers.prototype.evalOrAbort = function(reason, value) {
+    return this.evalOr(reason, value, false, true);
 };
 
 /**
