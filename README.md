@@ -70,7 +70,7 @@ export class <$= e.name $> {
 <$_ }) _$>
 }
 ```
-*Note* the `e` variable. `e` refers your **entity** that you defined in the `user.json` file.
+*Note* the `e` variable. `e` refers to your **entity** that you defined in the `user.json` file.
 
 *Brakedown*: Name the class the same way as you named your **entity**. Then iterate through the data array: for each element of the array create a new section for TypeORM field description. If the field is called id then make it a primary column, otherwise just make a normal column.
 
@@ -234,7 +234,7 @@ You will reuse your scenario file and all the templates that you've created, but
 It is purely up to you how far you want your entity to expand. You could create a whole back-end/front-end rest API and the relevant `html` files and their inputs fields. All based from the entity file. It is all up to your imagination where this takes you and how much it helps you.
 
 # Changing where files are loaded saved
-By default pathing in mtml is relative to the scenario file. To override this beahvior add a `relativeTo` key to the `entity` object, a `template` object, or a `use` object. There are two possible values `"scenario"` (the default) or `"process"`. `"process"` loads or spawns files relative to where mtml was called (the process).
+By default pathing in 'mtml' is relative to the scenario file. To override this behaviour add a `relativeTo` key to the `entity`, `template` or `use` objects. There are two possible values `"scenario"` (the default) or `"cwd"`. `"cwd"` loads or spawns files relative to where `mtml` was called ((c)urrent (w)orking (d)irectory).
 
 For example, with the folder structure:
 ```
@@ -251,40 +251,37 @@ Changing the above scenario file to:
 {
     "entity": {
         "json": "h.getArg(1)",
-        "relativeTo": "process"
+        "relativeTo": "cwd"
     },
     "template": [
         {
             "name": "dbEntity",
             "from": "templates/db-entity.template.mtml",
-            "relativeTo": "scenario"
         },
         {
             "name": "dbService",
             "from": "templates/db-service.template.mtml",
-            "relativeTo": "scenario"
         },
         {
             "name": "apiEndpoint",
             "from": "templates/rest-endpoint.template.mtml",
-            "relativeTo": "scenario"
         }
     ],
     "use": [
         {
             "template": "dbEntity",
             "spawn": "`db/entity/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.entity.ts`",
-            "relativeTo": "process"
+            "relativeTo": "cwd"
         },
         {
             "template": "dbService",
             "spawn": "`db/service/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.service.ts`",
-            "relativeTo": "process"
+            "relativeTo": "cwd"
         },
         {
             "template": "apiEndpoint",
             "spawn": "`rest/${v.decapitalize(e.name)}/${v.decapitalize(e.name)}.controller.ts`",
-            "relativeTo": "process"
+            "relativeTo": "cwd"
         }
     ]
 }
