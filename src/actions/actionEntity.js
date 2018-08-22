@@ -7,7 +7,6 @@ function ActionEntity(app) {
  */
 ActionEntity.prototype.execute = function() {
     var entity = this.app.s.rawScenario.entity;
-    entity.relativeTo = entity.relativeTo || 'scenario'
 
     // check if entity keys are valid
     this.checkEntityKeys(entity);
@@ -77,8 +76,8 @@ ActionEntity.prototype.checkEntityKeys = function(entity) {
         errors.push("Entity must have a 'json', 'here' or 'parser' key");
 
     if (keys.includes('relativeTo') &&
-        !['scenario', 'process'].includes(entity.relativeTo))
-        errors.push("Entity's 'relativeTo' key must be one of 'scenario' or 'process'");
+        !['scenario', 'process', undefined].includes(entity.relativeTo))
+        errors.push("Entity's 'relativeTo' key must be ommited or one of 'scenario' or 'process'");
 
     if (errors.length > 0)
         this.app.h.abort(errors.join('\n'));

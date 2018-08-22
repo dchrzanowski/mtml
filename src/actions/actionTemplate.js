@@ -15,7 +15,6 @@ ActionTemplate.prototype.execute = function() {
 
     // iterate through each of the template objects
     for (var each of templates) {
-        each.relativeTo = each.relativeTo || 'scenario'
         this.checkTemplateKeys(each);
 
         // attempt to eval the 'from' and 'name' keys.
@@ -41,8 +40,8 @@ ActionTemplate.prototype.checkTemplateKeys = function(template) {
         erros.push("Each template object must contain a 'name' and a 'from' key");
 
     if (template.relativeTo &&
-        !['scenario', 'process'].includes(template.relativeTo))
-        erros.push("A template object's 'relativeTo' key must be one of 'scenario' or 'process'");
+        !['scenario', 'process', undefined].includes(template.relativeTo))
+        erros.push("A template object's 'relativeTo' key must be ommited or one of 'scenario' or 'process'");
 
     if (erros.length > 0)
         this.app.h.abort(erros.join('\n'));

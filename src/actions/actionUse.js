@@ -16,7 +16,6 @@ ActionUse.prototype.execute = function() {
 
     // iterate through each of the 'use' objects
     for (var each of use) {
-        each.relativeTo = each.relativeTo || 'scenario';
         this.checkUseKeys(each);
 
         // attempt to eval the 'template' and 'spawn' keys.
@@ -43,8 +42,8 @@ ActionUse.prototype.checkUseKeys = function(use) {
         errors.push("Each use object must contain a 'template' and a 'spawn' key");
 
     if (use.relativeTo &&
-        !['scenario', 'process'].includes(use.relativeTo))
-        errors.push("A use object's 'relativeTo' key must be one of 'scenario' or 'process'");
+        !['scenario', 'process', undefined].includes(use.relativeTo))
+        errors.push("A use object's 'relativeTo' key must be ommited or one of 'scenario' or 'process'");
 
     if (errors.length > 0)
         this.app.h.abort(errors.join('\n'));
