@@ -162,14 +162,6 @@ Helpers.prototype.evalOrAbort = function(reason, value) {
     return this.evalOr(reason, value, false, true);
 };
 
-/**
- * Attempt to evalute a value, returns false if eval fails
- * @param {String} value - Value to be eval'ed
- */
-Helpers.prototype.evalOrFalse = function(value) {
-    return this.evalOr(false, value);
-};
-
 module.exports = function(app) {
     return new Helpers(app);
 };
