@@ -68,7 +68,7 @@ ActionEntity.prototype.executeParser = function(parser, relativeTo) {
 ActionEntity.prototype.checkEntityKeys = function(entity) {
 
     var keys = Object.keys(entity);
-    var errors = []
+    var errors = [];
 
     if (!(keys.includes('json') ||
           keys.includes('here') ||
@@ -76,8 +76,8 @@ ActionEntity.prototype.checkEntityKeys = function(entity) {
         errors.push("Entity must have a 'json', 'here' or 'parser' key");
 
     if (entity.relativeTo &&
-        !['scenario', 'process'].includes(entity.relativeTo))
-        errors.push("Entity's 'relativeTo' key must be ommited or one of 'scenario' or 'process'");
+        !['scenario', 'cwd'].includes(entity.relativeTo))
+        errors.push("Entity's 'relativeTo' key must be ommited or must be one of 'scenario' or 'cwd'");
 
     if (errors.length > 0)
         this.app.h.abort(errors.join('\n'));

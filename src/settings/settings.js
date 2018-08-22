@@ -40,9 +40,9 @@ Settings.prototype.hasBaseDir = function() {
 
     if (idx != -1) {
         var args = process.argv.splice(idx, 2);
-        this.basedir = this.app.path.join(process.cwd(), args[1]);
+        this.baseDir = this.app.path.join(process.cwd(), args[1]);
     } else {
-        this.basedir = process.cwd();
+        this.baseDir = process.cwd();
     }
 };
 

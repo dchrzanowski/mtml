@@ -27,7 +27,7 @@ Helpers.prototype.askUser = function(prompt) {
  */
 Helpers.prototype.loadFileRelative = function(filePath, relativeTo = 'scenario') {
     // join the given path with the scenario's path
-    if (relativeTo === 'process') {
+    if (relativeTo === 'cwd') {
         filePath = this.joinPath(process.cwd(), filePath);
     } else {
         filePath = this.joinPath(this.app.s.path, filePath);
@@ -57,10 +57,11 @@ Helpers.prototype.loadFile = function(filePath) {
  * @param {String} content - Textual representation of the file
  */
 Helpers.prototype.saveFileRelative = function(filePath, content, relativeTo = 'scenario') {
-    // join the given path with the scenario's path
-    if (relativeTo === 'process') {
+    // join the scenario with the 'cwd'
+    if (relativeTo === 'cwd') {
         filePath = this.joinPath(process.cwd(), filePath);
     } else {
+        // join the given path with the scenario's path
         filePath = this.joinPath(this.app.s.path, filePath);
     }
 

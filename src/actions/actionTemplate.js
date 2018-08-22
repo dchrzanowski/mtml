@@ -11,7 +11,7 @@ ActionTemplate.prototype.execute = function() {
     var templates = this.app.s.rawScenario.template;
 
     if (!Array.isArray(templates))
-        this.app.h.abort("Entity's 'template' key must be an array");
+        this.app.h.abort("Scenario's 'template' key must be an array");
 
     // iterate through each of the template objects
     for (var each of templates) {
@@ -34,17 +34,18 @@ ActionTemplate.prototype.execute = function() {
  * @param {Object} template - Template object
  */
 ActionTemplate.prototype.checkTemplateKeys = function(template) {
-    var erros = []
+    var errors = [];
+
     if (!template.name ||
         !template.from)
-        erros.push("Each template object must contain a 'name' and a 'from' key");
+        errors.push("Each template object must contain a 'name' and a 'from' key");
 
     if (template.relativeTo &&
-        !['scenario', 'process'].includes(template.relativeTo))
-        erros.push("A template object's 'relativeTo' key must be ommited or one of 'scenario' or 'process'");
+        !['scenario', 'cwd'].includes(template.relativeTo))
+        errors.push("A template object's 'relativeTo' key must be ommited or must be one of 'scenario' or 'cwd'");
 
-    if (erros.length > 0)
-        this.app.h.abort(erros.join('\n'));
+    if (errors.length > 0)
+        this.app.h.abort(errors.join('\n'));
 };
 
 module.exports = function(app) {

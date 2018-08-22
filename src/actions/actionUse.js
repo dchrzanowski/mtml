@@ -36,14 +36,15 @@ ActionUse.prototype.execute = function() {
  * @param {Object} use - Use object
  */
 ActionUse.prototype.checkUseKeys = function(use) {
-    const errors = []
+    var errors = [];
+
     if (!use.template ||
         !use.spawn)
         errors.push("Each use object must contain a 'template' and a 'spawn' key");
 
     if (use.relativeTo &&
-        !['scenario', 'process'].includes(use.relativeTo))
-        errors.push("A use object's 'relativeTo' key must be ommited or one of 'scenario' or 'process'");
+        !['scenario', 'cwd'].includes(use.relativeTo))
+        errors.push("A use object's 'relativeTo' key must be ommited or must be one of 'scenario' or 'cwd'");
 
     if (errors.length > 0)
         this.app.h.abort(errors.join('\n'));
