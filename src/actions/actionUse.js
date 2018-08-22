@@ -19,7 +19,10 @@ ActionUse.prototype.execute = function() {
         this.checkUseKeys(each);
 
         // check if we should use it by checking if there is no condition or if the eval of the condition gives true
-        const shouldUse = !each.condition || this.app.h.evalOrFalse(each.condition);
+        const shouldUse = !each.condition || this.app.h.evalOrAbort(
+            'Each use object\'s \'condition\' key must be eval-able or omitted',
+            each.condition
+        );
 
         if (shouldUse) {
             // attempt to eval the 'template' and 'spawn' keys.
