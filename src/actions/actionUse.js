@@ -16,18 +16,18 @@ ActionUse.prototype.execute = function() {
 
     // iterate through each of the 'use' objects
     for (var each of use) {
+        each.relativeTo = each.relativeTo || 'scenario';
         this.checkUseKeys(each);
 
         // attempt to eval the 'template' and 'spawn' keys.
         var template = this.app.h.evalOrLeave(each.template);
         var spawn = this.app.h.evalOrLeave(each.spawn);
-        var relativeTo = this.app.h.evalOrLeave(each.relativeTo) || 'scenario';
 
         // assign the 'use' to the scenario under its given name
         this.app.s.use.push({
             template: template,
             spawn: spawn,
-            relativeTo: relativeTo
+            relativeTo: each.relativeTo
         });
     }
 };
@@ -41,7 +41,13 @@ ActionUse.prototype.checkUseKeys = function(use) {
     if (!use.template ||
         !use.spawn)
         errors.push("Each use object must contain a 'template' and a 'spawn' key");
-    // if ()
+
+    if (use.relativeTo &&
+        !['scenario', 'process'].includes(use.relativeTo))
+        errors.push("A use object's 'relativeTo' key must be one of 'scenario' or 'process'");
+
+    if (errors.length > 0)
+        this.app.h.abort(errors.join('\n'));
 };
 
 module.exports = function(app) {

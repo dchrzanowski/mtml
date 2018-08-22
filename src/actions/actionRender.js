@@ -17,7 +17,7 @@ ActionRender.prototype.execute = function() {
         var spawnPath = each.spawn;
 
         // save the file relative to the scenario file
-        this.app.h.saveFileRelative(spawnPath, renderedTemplate);
+        this.app.h.saveFileRelative(spawnPath, renderedTemplate, each.relativeTo);
     }
 };
 
