@@ -8,7 +8,7 @@ function Helpers(app) {
  */
 Helpers.prototype.abort = function(reason) {
     console.log(this.app.c.red(reason));
-    process.exit(0);
+    process.exit(1);
 };
 
 /**
@@ -25,9 +25,13 @@ Helpers.prototype.askUser = function(prompt) {
  * @param {String} filePath - The path of the file
  * @returns {String} File content
  */
-Helpers.prototype.loadFileRelative = function(filePath) {
+Helpers.prototype.loadFileRelative = function(filePath, relativeTo = 'scenario') {
     // join the given path with the scenario's path
-    filePath = this.joinPath(this.app.s.path, filePath);
+    if (relativeTo === 'cwd') {
+        filePath = this.joinPath(process.cwd(), filePath);
+    } else {
+        filePath = this.joinPath(this.app.s.path, filePath);
+    }
 
     return this.loadFile(filePath);
 };
@@ -52,9 +56,14 @@ Helpers.prototype.loadFile = function(filePath) {
  * @param {String} filePath - The path of the file
  * @param {String} content - Textual representation of the file
  */
-Helpers.prototype.saveFileRelative = function(filePath, content) {
-    // join the given path with the scenario's path
-    filePath = this.joinPath(this.app.s.path, filePath);
+Helpers.prototype.saveFileRelative = function(filePath, content, relativeTo = 'scenario') {
+    // join the scenario with the 'cwd'
+    if (relativeTo === 'cwd') {
+        filePath = this.joinPath(process.cwd(), filePath);
+    } else {
+        // join the given path with the scenario's path
+        filePath = this.joinPath(this.app.s.path, filePath);
+    }
 
     this.saveFile(filePath, content);
 };
@@ -119,8 +128,10 @@ Helpers.prototype.joinPath = function(a, b) {
 /**
  * Attempt to evalute a value
  * @param {String} value - Value to be eval'ed
+ * @param {Boolean} value - (Optional) Abort when eval fails flag
+ * @param {String} value - (Optional) Fail message
  */
-Helpers.prototype.evalOrLeave = function(value) {
+Helpers.prototype.evalOrLeave = function(value, abortFlag, errMsg) {
 
     // make some app libs available for eval (for ease of use);
     var v = this.app.v;
@@ -137,6 +148,9 @@ Helpers.prototype.evalOrLeave = function(value) {
     try {
         return eval(value);
     } catch (e) {
+        if (abortFlag) {
+            this.abort(errMsg || "Could not eval: " + value);
+        }
         return value;
     }
 };
