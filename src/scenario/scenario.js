@@ -24,7 +24,7 @@ Scenario.prototype.scenarioSetPaths = function () {
         this.path = this.app.path.dirname(path);
 
     } else {
-        this.h.abort("Could not locate scenario file: " + path);
+        this.app.h.abort("Could not locate scenario file: " + path);
     }
 };
 
