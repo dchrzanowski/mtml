@@ -48,14 +48,17 @@ ActionEntity.prototype.executeParser = function(parser, relativeTo) {
 
     this.checkParserKeys(parser);
 
+    var file = this.app.h.evalOrLeave(parser.file);
     // get the parser's path
-    var parserPath = this.app.h.joinPath(this.app.s.path, parser.file);
+    var parserPath = this.app.h.joinPath(this.app.s.path, filePath);
 
     // require the parser
     var parsingMethod = require(parserPath);
 
+    var data = this.app.h.evalOrLeave(parser.data)
+
     // get the data file
-    var dataFile = this.app.h.loadFileRelative(parser.data, relativeTo);
+    var dataFile = this.app.h.loadFileRelative(data, relativeTo);
 
     // use the parser on the data file and assign to the scenario
     this.app.s.entity = parsingMethod(dataFile);
