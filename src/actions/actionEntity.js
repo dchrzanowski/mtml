@@ -50,7 +50,7 @@ ActionEntity.prototype.executeParser = function(parser, relativeTo) {
 
     var file = this.app.h.evalOrLeave(parser.file);
     // get the parser's path
-    var parserPath = this.app.h.joinPath(this.app.s.path, filePath);
+    var parserPath = this.app.h.joinPath(this.app.s.path, file);
 
     // require the parser
     var parsingMethod = require(parserPath);
