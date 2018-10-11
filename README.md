@@ -1,5 +1,5 @@
-# (m)ake (t)e(m)p(l)ate
-Is a command line tool that allows the user to create templates from a data source.
+# (m)ake from (t)e(m)p(l)ate
+Is a command line tool that allows the user to generate files from user made templates with arbitrary data made by the user as well.
 
 The data source is preferably a `json` object or a `json` file. If you'd like to provide a data source from a different file, then you will have to write your own parser (`mtml` allows you to provide a custom parser).
 
@@ -234,7 +234,7 @@ You will reuse your scenario file and all the templates that you've created, but
 
 It is purely up to you how far you want your entity to expand. You could create a whole back-end/front-end rest API and the relevant `html` files and their inputs fields. All based from the entity file. It is all up to your imagination where this takes you and how much it helps you.
 
-# Changing where files are loaded saved
+# Changing where files are loaded/saved
 By default pathing in 'mtml' is relative to the scenario file. To override this behaviour add a `relativeTo` key to the `entity`, `template` or `use` objects. There are two possible values `"scenario"` (the default) or `"cwd"`. `"cwd"` loads or spawns files relative to where `mtml` was called ((c)urrent (w)orking (d)irectory).
 
 For example, with the folder structure:
