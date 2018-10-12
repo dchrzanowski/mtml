@@ -17,7 +17,7 @@ ActionRender.prototype.execute = function() {
             // grab the template for this 'use'
             var template = this.app.s.template[each.template];
             // render the template with EJS
-            var renderedTemplate = this.app.renderer.render(template);
+            var renderedTemplate = this.app.renderer.render(template, each.useMeta);
 
             // save the file relative to the scenario file
             this.app.h.saveFileRelative(spawnPath, renderedTemplate, each.relativeTo);

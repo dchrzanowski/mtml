@@ -22,13 +22,15 @@ ActionUse.prototype.execute = function() {
         var template = this.app.h.evalOrLeave(each.template);
         var spawn = this.app.h.evalOrLeave(each.spawn);
         var useIf = each.if ? this.app.h.evalOrLeave(each.if, true) : true;
+        var useMeta = this.app.h.evalOrLeave(each.meta);
 
         // assign the 'use' to the scenario under its given name
         this.app.s.use.push({
             template: template,
             spawn: spawn,
             if: useIf,
-            relativeTo: each.relativeTo
+            relativeTo: each.relativeTo,
+            useMeta: useMeta || {},
         });
     }
 };

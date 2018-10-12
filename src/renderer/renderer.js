@@ -7,8 +7,7 @@ function Rendered(app) {
  * @param {String} content - Template as a string
  * @returns {String} Rendered template with EJS
  */
-Rendered.prototype.render = function(content) {
-
+Rendered.prototype.render = function(content, useMeta) {
     return this.app.ejs.render(
         content,
         {
@@ -22,7 +21,9 @@ Rendered.prototype.render = function(content) {
             // shortcut to entity
             e: this.app.s.entity,
             // shortcut to meta
-            m: this.app.s.meta
+            m: this.app.s.meta,
+            // shortcut to template meta
+            um: useMeta,
         },
         {
             delimiter: '$'
