@@ -155,6 +155,15 @@ Helpers.prototype.evalOrLeave = function(value, abortFlag, errMsg) {
     }
 };
 
+Helpers.prototype.evalObject = function(obj) {
+    if (obj != null && typeof obj === 'object') {
+        for (var key in obj) {
+            obj[key] = this.app.h.evalOrLeave(obj[key]);
+        }
+    }
+    return obj;
+};
+
 module.exports = function(app) {
     return new Helpers(app);
 };
